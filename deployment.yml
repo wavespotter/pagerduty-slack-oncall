@@ -1,6 +1,6 @@
 ---
-AWSTemplateFormatVersion: '2010-09-09'
-Transform: 'AWS::Serverless-2016-10-31'
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: "AWS::Serverless-2016-10-31"
 
 Parameters:
   SSMKeyArn:
@@ -29,55 +29,53 @@ Resources:
     Type: AWS::IAM::Role
     Properties:
       ManagedPolicyArns:
-      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
       AssumeRolePolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
-        - Effect: Allow
-          Sid: 'Lambda'
-          Principal:
-            Service:
-            - lambda.amazonaws.com
-          Action:
-            - sts:AssumeRole
+          - Effect: Allow
+            Sid: "Lambda"
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
       Path: "/cfn/"
       Policies:
-      - PolicyName: SSM
-        PolicyDocument:
-          Statement:
-          - Effect: Allow
-            Action:
-            - ssm:GetParameters
-            Resource:
-            - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${PDSSMKeyName}"
-            - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${SlackSSMKeyName}"
-      - PolicyName: KMS
-        PolicyDocument:
-          Statement:
-          - Effect: Allow
-            Action:
-            - kms:Decrypt
-            Resource:
-            - !Ref SSMKeyArn
-      - PolicyName: DDB
-        PolicyDocument:
-          Statement:
-          - Effect: Allow
-            Action:
-            - dynamodb:scan
-            Resource:
-            - !GetAtt ConfigTable.Arn
+        - PolicyName: SSM
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ssm:GetParameters
+                Resource:
+                  - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${PDSSMKeyName}"
+                  - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${SlackSSMKeyName}"
+        - PolicyName: KMS
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action:
+                  - kms:Decrypt
+                Resource:
+                  - !Ref SSMKeyArn
+        - PolicyName: DDB
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:scan
+                Resource:
+                  - !GetAtt ConfigTable.Arn
 
   ConfigTable:
     Type: "AWS::DynamoDB::Table"
     Properties:
       AttributeDefinitions:
-        -
-          AttributeName: "schedule"
+        - AttributeName: "schedule"
           AttributeType: "S"
       KeySchema:
-        -
-          AttributeName: "schedule"
+        - AttributeName: "schedule"
           KeyType: "HASH"
       ProvisionedThroughput:
         ReadCapacityUnits: 1
@@ -96,7 +94,7 @@ Resources:
         Bucket: !Ref Bucket
         Key: !Ref md5
       Layers:
-        - arn:aws:lambda:ca-central-1:778625758767:layer:AWSLambda-Python-AWS-SDK:4 # for ca-central-1 region
+        - arn:aws:lambda:us-east-2:259788987135:layer:AWSLambda-Python-AWS-SDK:4 # for us-east-2 region
       Environment:
         Variables:
           PD_API_KEY_NAME: !Ref PDSSMKeyName
@@ -107,4 +105,4 @@ Resources:
         Cron:
           Type: Schedule
           Properties:
-              Schedule: 'rate(5 minutes)'
+            Schedule: "rate(5 minutes)"
