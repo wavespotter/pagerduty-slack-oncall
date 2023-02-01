@@ -1,4 +1,4 @@
-STACKNAME_BASE=pagerduty-oncall-slack-topic
+STACKNAME_BASE=pagerduty-slack-lambda-topic
 # if REGION is changed, use table in https://aws.amazon.com/blogs/compute/upcoming-changes-to-the-python-sdk-in-aws-lambda/ to update ChatTopicFunction lambda layer value
 REGION="us-east-2"
 # Bucket in REGION that is used for deployment (`pd-oncall-chat-topic` is already used)
