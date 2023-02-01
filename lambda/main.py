@@ -205,7 +205,7 @@ def do_work(obj):
         oncall_dict[username] = sched_name
 
     if oncall_dict:  # then it is valid and update the chat topic
-        topic = ""
+        topic = ":pager: "
         i = 0
         for user in oncall_dict:
             if i != 0:
