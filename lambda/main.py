@@ -16,7 +16,7 @@ sema = threading.Semaphore(value=maxthreads)
 logging.getLogger('boto3').setLevel(logging.CRITICAL)
 logging.getLogger('botocore').setLevel(logging.CRITICAL)
 logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.ERROR)
 
 # Fetch the PD API token from PD_API_KEY_NAME key in SSM
 PD_API_KEY = boto3.client('ssm').get_parameters(
