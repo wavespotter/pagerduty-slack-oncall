@@ -71,6 +71,12 @@ Resources:
   ConfigTable:
     Type: "AWS::DynamoDB::Table"
     Properties:
+      Tags:
+        env: "production"
+        service: "pagerduty-slack-oncall"
+        version: !Ref md5
+        sofar:team: "platform"
+        sofar:cost-category: "opex"
       AttributeDefinitions:
         - AttributeName: "schedule"
           AttributeType: "S"
@@ -87,6 +93,12 @@ Resources:
   ChatTopicFunction:
     Type: AWS::Serverless::Function
     Properties:
+      Tags:
+        env: "production"
+        service: "pagerduty-slack-oncall"
+        version: !Ref md5
+        sofar:team: "platform"
+        sofar:cost-category: "opex"
       Handler: main.handler
       Runtime: python3.8
       Timeout: 120
