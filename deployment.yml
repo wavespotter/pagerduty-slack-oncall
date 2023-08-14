@@ -72,11 +72,16 @@ Resources:
     Type: "AWS::DynamoDB::Table"
     Properties:
       Tags:
-        env: "production"
-        service: "pagerduty-slack-oncall"
-        version: !Ref md5
-        sofar:team: "platform"
-        sofar:cost-category: "opex"
+        - Key: "env"
+          Value: "production"
+        - Key: "service"
+          Value: "pagerduty-slack-oncall"
+        - Key: "version"
+          Value: !Ref md5
+        - Key: "sofar:team"
+          Value: "platform"
+        - Key: "sofar:cost-category"
+          Value: "opex"
       AttributeDefinitions:
         - AttributeName: "schedule"
           AttributeType: "S"
