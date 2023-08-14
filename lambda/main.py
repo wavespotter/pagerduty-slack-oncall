@@ -60,6 +60,8 @@ def get_user(schedule_id):
             username = username + " (Override)"
     except IndexError:
         username = "No One :thisisfine:"
+    except KeyError:
+        username = f"Deactivated User :scream: ({normal.json()['users'][0]['summary']})"
 
     logger.info("Currently on call: {}".format(username))
     return username
@@ -144,6 +146,7 @@ def update_slack_topic(channel, proposed_update):
         first_part = "none"
         second_part = "."  # if there is no topic, just add something
 
+    proposed_update = proposed_update.strip()
     if proposed_update != first_part:
         # slack limits topic to 250 chars
         topic = "{} | {}".format(proposed_update, second_part)
@@ -215,7 +218,7 @@ def do_work(obj):
                 oncall_dict[user]
             )
             i += 1
-            
+
         if 'slack' in obj.keys():
             slack = obj['slack']['S']
             # 'slack' may contain multiple channels seperated by whitespace
